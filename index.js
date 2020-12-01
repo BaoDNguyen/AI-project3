@@ -57,7 +57,7 @@ app.post('/weatherBot',(req,res)=>{
     });
 
     function greeting (agent) {
-        agent.add('hello from Bao!');
+        agent.add('Welcome to Weather Assistant! How can I help you?');
     }
 
     let intentMap = new Map();
