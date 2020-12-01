@@ -1,0 +1,29 @@
+{
+  "name": "ai-project3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BaoDNguyen/AI-project3.git"
+  },
+  "keywords": [
+    "ai"
+  ],
+  "author": "Bao Nguyen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BaoDNguyen/AI-project3/issues"
+  },
+  "homepage": "https://github.com/BaoDNguyen/AI-project3#readme",
+  "dependencies": {
+    "dialogflow": "^1.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
