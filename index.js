@@ -35,6 +35,8 @@ const dialogflowFulfillment = (request, response) => {
 
     let botRes = management.botMessage(agent,history);
 
+    history = botRes.myHis;
+
     function addRes(agent) {
         if (botRes.message !== '') agent.add(botRes.message);
         else agent.add('Please tell me more!');

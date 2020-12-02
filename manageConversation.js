@@ -3,8 +3,12 @@ const weatherAPI = require('./weatherAPI');
 function botMessage (agent,history) {
 
     let message = '';
-    let removeHis = false;
     let flowYN = history.flowYN;
+    let myHis = history;
+
+    let cityName = history.city;
+    let timePoint = history.timePoint;
+    let weatherParameter = history.weatherParameter;
 
     let data;
 
@@ -55,11 +59,9 @@ function botMessage (agent,history) {
         case 'weatherRequest':
             let parameters = agent.parameters;
             // city first
-            let cityName = history.city;
             if (parameters.city !== '') cityName = parameters.city;
             else if (cityName === '') message = askCity[Math.floor(Math.random()*askCity.length)];
             // time next
-            let timePoint = history.timePoint;
             if (message === '') {
                 if (parameters['date-time'] !== '') {
                     timePoint = '';
@@ -104,7 +106,6 @@ function botMessage (agent,history) {
                 }
             }
             // final is weather parameters
-            let weatherParameter = history.weatherParameter;
             if (message === '') {
                 if (parameters.weatherParameter !== '') weatherParameter = parameters.weatherParameter;
                 else if (weatherParameter === '') message = askWeatherParameter[Math.floor(Math.random()*askWeatherParameter.length)];
@@ -183,16 +184,16 @@ function botMessage (agent,history) {
                                 message = 'The weather at '+cityName+' '+timeRes+' '+prep+' '+parameters.time+' is: '+data;
                                 break;
                         }
-                        removeHis = true;
+                        myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:0};
                     } else {
                         message = 'Our weather API is a 5 day weather forecast (from today). Is your request time in this range?';
                         // flow yes/no 100
-                        flowYN = 100;
+                        myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:100};
                     }
                 } else {
                     message = askCheck[Math.floor(Math.random()*askCheck.length)];
                     // flow yes/no 1000
-                    flowYN = 1000;
+                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:1000};
                 }
             }
             break;
@@ -201,19 +202,19 @@ function botMessage (agent,history) {
         case 'agreement':
             if (flowYN === 100) {
                 message = 'There must be something wrong! Do you type your city correctly?';
-                flowYN = 101;
+                myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:101};
             }
             if (flowYN === 101) {
                 message = 'There maybe some problems with my free weather API. Please retry the process again!'
-                removeHis = true;
+                myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:0};
             }
             if (flowYN === 200) {
                 message = askDate[Math.floor(Math.random()*askDate.length)];
-                flowYN = 0;
+                myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:0}
             }
             if (flowYN === 1000) {
                 message = 'Our weather API is a 5 day weather forecast (from today). Is your request time in this range?';
-                flowYN = 100;
+                myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:100};
             }
             break;
 
@@ -221,21 +222,20 @@ function botMessage (agent,history) {
         case 'disagreement':
             if (flowYN === 100) {
                 message = 'Do you want to request weather information on another day?';
-                flowYN = 200;
+                myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:200};
             }
             if (flowYN === 200) {
                 message = 'We are so sorry for the limitation of our services! If you have another request, please ask!';
-                flowYN = 0;
-                removeHis = true;
+                myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:0};
             }
             if (flowYN === 1000) {
                 message = 'Please correct the information!';
-                flowYN = 0;
+                myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:0};
             }
             break;
     }
 
-    return {message: message, removeHis: removeHis};
+    return {message: message, myHis: myHis};
 
 }
 
