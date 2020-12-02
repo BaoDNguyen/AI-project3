@@ -36,7 +36,8 @@ const dialogflowFulfillment = (request, response) => {
     let botRes = management.botMessage(agent,history);
 
     function addRes(agent) {
-        agent.add(botRes.message);
+        if (botRes.message !== '') agent.add(botRes.message);
+        else agent.add('Please tell me more!');
     }
 
     let intentMap = new Map();

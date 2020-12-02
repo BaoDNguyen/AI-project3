@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e11b82e9-43c9-4d68-a9f5-c31bcb0b30db" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/manageConversation.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/weatherAPI.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myDialogflow.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +50,7 @@
       <workItem from="1606784354675" duration="4345000" />
       <workItem from="1606826716961" duration="207000" />
       <workItem from="1606836905757" duration="31537000" />
+      <workItem from="1606900749516" duration="124000" />
     </task>
     <servers />
   </component>
