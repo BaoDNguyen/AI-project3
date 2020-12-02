@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e11b82e9-43c9-4d68-a9f5-c31bcb0b30db" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/myDialogflow.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,7 +52,7 @@
       <workItem from="1606545368547" duration="568000" />
       <workItem from="1606784354675" duration="4345000" />
       <workItem from="1606826716961" duration="207000" />
-      <workItem from="1606836905757" duration="9425000" />
+      <workItem from="1606836905757" duration="15635000" />
     </task>
     <servers />
   </component>
