@@ -1,6 +1,5 @@
 const express = require('express');
-// will use this later to send requests
-const http = require('http');
+
 // import env variables
 //require('dotenv').config();
 
@@ -20,48 +19,32 @@ app.listen(port, () => {
     console.log(`🌏 Server is running at http://localhost:${port}`)
 });
 
+let history = {city:'',timePoint:'',weatherParameter:'',flowYN:0};
+
+let management = require('./manageConversation');
+
 // post
 app.post('/weatherBot', (req, res) => {
 
     dialogflowFulfillment(req,res);
 
-    // const weatherKey = '3f2b39ee96bea5d53296ae364ac222de';
-    // var cityName = 'London';
-    //
-    // const reqUrl = encodeURI(
-    //     `http://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${weatherKey}`
-    // );
-    //
-    // http.get(
-    //     reqUrl,
-    //     (responseFromAPI) => {
-    //
-    //         let completeResponse = '';
-    //         responseFromAPI.on('data', (chunk) => {
-    //             completeResponse += chunk;
-    //         })
-    //         responseFromAPI.on('end', () => {
-    //             try {
-    //                 const weatherRespond = JSON.parse(completeResponse);
-    //                 return res.json({weather: weatherRespond.list[0].weather[0].description});
-    //             } catch (e) {
-    //                 console.error(e.message);
-    //             }
-    //         });
-    //     }).on('error',(e)=>{
-    //         console.error('Got error: ${e.message}')
-    // });
 });
 
 const dialogflowFulfillment = (request, response) => {
     const agent = new WebhookClient({request,response});
 
-    function sayHello(agent) {
-        agent.add('respond from my code!');
+    let botRes = management.botMessage(agent,history);
+
+    function addRes(agent) {
+        agent.add(botRes.message);
     }
 
     let intentMap = new Map();
-    intentMap.set('weatherRequest',sayHello);
+    intentMap.set('agreement',addRes);
+    intentMap.set('Default Welcome Intent',addRes);
+    intentMap.set('disagreement',addRes);
+    intentMap.set('weatherRequest',addRes);
+
     agent.handleRequest(intentMap);
 
 }
