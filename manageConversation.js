@@ -111,7 +111,7 @@ function botMessage (agent,history) {
                 else if (weatherParameter === '') message = askWeatherParameter[Math.floor(Math.random()*askWeatherParameter.length)];
             }
             // enough information
-            if (cityName !== '' && timePoint !== '' && weatherParameter !== '') {
+            if (message === '') {
                 data = weatherAPI.getWeatherInfo(cityName,timePoint,weatherParameter);
                 if (data) {
                     if (data !== 'no data') {
