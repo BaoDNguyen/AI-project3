@@ -107,7 +107,7 @@ function botMessage (agent,history,myData) {
                 if (agent.parameters.city !== '') {
                     cityName = agent.parameters.city;
                     myHis.city = cityName;
-                } else if (history.city === '') {
+                } else if (cityName === '') {
                     message = askCity[Math.floor(Math.random()*askCity.length)];
                     break;
                 }
