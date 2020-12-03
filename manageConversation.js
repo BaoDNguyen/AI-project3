@@ -219,7 +219,7 @@ function botMessage (agent,history,myData) {
                 // enough information
                 if (message === '') {
                     data = myData;
-                    // if (data) {
+                    if (flowYN===0) {
                         if (data !== 'no data') {
                             myHis.data = data;
                             console.log('data4',data);
@@ -241,11 +241,11 @@ function botMessage (agent,history,myData) {
                             // open flow 100
                             myHis.flowYN = 100;
                         }
-                    // } else {
-                    //     message = askCheck[Math.floor(Math.random()*askCheck.length)];
-                    //     // open flow 1000
-                    //     myHis.flowYN = 1000;
-                    // }
+                    } else {
+                        message = askCheck[Math.floor(Math.random()*askCheck.length)];
+                        // open flow 1000
+                        myHis.flowYN = 1000;
+                    }
                 }
                 break;
 
