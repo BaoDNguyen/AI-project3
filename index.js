@@ -19,7 +19,7 @@ app.listen(port, () => {
     console.log(`🌏 Server is running at http://localhost:${port}`)
 });
 
-let history = {city:'',timePoint:'',weatherParameter:'',flowYN:0,data:''};
+let history = {city:'',date:'',time:'',weatherParameter:'',flowYN:0,data:''};
 
 let management = require('./manageConversation');
 
@@ -37,12 +37,11 @@ const dialogflowFulfillment = (request, response) => {
 
     if (agent.intent === 'weatherRequest') {
         let hasCityName = agent.parameters.city !== '' || history.city !== '';
-        let hasTimePoint1 = agent.parameters.date !== '' || agent.parameters['date-period'] !== '';
-        let hasTimePoint2 = agent.parameters.time !== '' || agent.parameters['time-period'] !== '';
-        let hasTimePoint = hasTimePoint1 && hasTimePoint2 || history.timePoint !== '';
+        let hasDate = agent.parameters.date !== '' || agent.parameters['date-period'] !== '' || history.date !== '';
+        let hasTime = agent.parameters.time !== '' || agent.parameters['time-period'] !== '' || history.time !== '';
         let hasWeatherParameter = agent.parameters.weatherParameter[0] !== '' || history.weatherParameter !== '';
 
-        if (!hasCityName || !hasTimePoint || !hasWeatherParameter) {
+        if (!hasCityName || !hasDate || !hasTime || !hasWeatherParameter) {
             let botRes = management.botMessage(agent,history);
             history = botRes.myHis;
 
@@ -62,9 +61,17 @@ const dialogflowFulfillment = (request, response) => {
         } else {
             let cityName = (agent.parameters.city !== '') ? agent.parameters.city : history.city;
             let timePoint = '';
-            if (hasTimePoint1 && hasTimePoint2) {
-                if (agent.parameters['date'] !== '') {
-                    timePoint += agent.parameters['date'].split('T')[0] + ' ';
+            let hasNewDate = agent.parameters.date !== '' || agent.parameters['date-period'] !== '';
+            let hasNewTime = agent.parameters.time !== '' || agent.parameters['time-period'] !== '';
+            if (hasNewDate && !hasNewTime) {
+                if (agent.parameters.date !== '') {
+                    timePoint += agent.parameters.date.split('T')[0] + ' '+history.time;
+                } else if (agent.parameters['date-period'] !== '') {
+                    timePoint += agent.parameters['date-period'].startDate.split('T')[0]+' '+history.time;
+                }
+            } else if (hasNewDate && hasNewTime) {
+                if (agent.parameters.date !== '') {
+                    timePoint += agent.parameters.date.split('T')[0] + ' ';
                     if (agent.parameters.time !== '') {
                         let t = agent.parameters.time.split('T')[1].split('-')[0].split(':')[0];
                         let tt = Math.round(+t/3)*3;
@@ -90,8 +97,22 @@ const dialogflowFulfillment = (request, response) => {
                         timePoint += tt.toString()+':00:00';
                     }
                 }
-            } else timePoint = history.timePoint;
-            let weatherParameter = (agent.parameters.weatherParameter !== '') ? agent.parameters.weatherParameter[0] : history.weatherParameter;
+            } else if (!hasNewDate && hasNewTime) {
+                timePoint = history.date+' ';
+                if (agent.parameters['time'] !== '') {
+                    let t = agent.parameters.time.split('T')[1].split('-')[0].split(':')[0];
+                    let tt = Math.round(+t/3)*3;
+                    if (tt === 24) tt = 0;
+                    timePoint += tt.toString()+':00:00';
+                } else if (agent.parameters['time-period'] !== '') {
+                    let t = agent.parameters['time-period'].startTime.split('T')[1].split('-')[0].split(':')[0];
+                    let tt = Math.round(+t/3)*3;
+                    if (tt === 24) tt = 0;
+                    timePoint += tt.toString()+':00:00';
+                }
+            } else if (!hasNewDate && !hasNewTime) timePoint = history.date+' '+history.time;
+
+            let weatherParameter = (agent.parameters.weatherParameter[0] !== '') ? agent.parameters.weatherParameter[0] : history.weatherParameter;
 
             const reqUrl = encodeURI(
                 `http://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${weatherKey}`

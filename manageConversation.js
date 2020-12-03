@@ -5,7 +5,8 @@ function botMessage (agent,history,myData) {
     let myHis = history;
 
     let cityName = history.city;
-    let timePoint = history.timePoint;
+    let date = history.date;
+    let time = history.time;
     let weatherParameter = history.weatherParameter;
 
     let data;
@@ -96,52 +97,124 @@ function botMessage (agent,history,myData) {
 
             // try to get information
             case 'weatherRequest':
-                let parameters = agent.parameters;
                 // city first
-                if (parameters.city !== '') cityName = parameters.city;
-                else if (cityName === '') message = askCity[Math.floor(Math.random()*askCity.length)];
+                if (agent.parameters.city !== '') {
+                    cityName = agent.parameters.city;
+                    myHis.city = cityName;
+                } else if (history.city === '') {
+                    message = askCity[Math.floor(Math.random()*askCity.length)];
+                    break;
+                }
                 // time next
                 if (message === '') {
-                    if (parameters['date'] !== '') {
-                        timePoint = '';
-                        timePoint += parameters['date'].split('T')[0] + ' ';
-                        if (parameters.time !== '') {
-                            let t = parameters.time.split('T')[1].split('-')[0].split(':')[0];
+                    let hasNewDate = agent.parameters.date !== '' || agent.parameters['date-period'] !== '';
+                    let hasNewTime = agent.parameters.time !== '' || agent.parameters['time-period'] !== '';
+                    if (hasNewDate && hasNewTime) {
+                        if (agent.parameters.date !== '') {
+                            timePoint += agent.parameters.date.split('T')[0] + ' ';
+                            myHis.date = agent.parameters.date.split('T')[0];
+                            if (agent.parameters.time !== '') {
+                                let t = agent.parameters.time.split('T')[1].split('-')[0].split(':')[0];
+                                let tt = Math.round(+t/3)*3;
+                                if (tt === 24) tt = 0;
+                                timePoint += tt.toString()+':00:00';
+                                myHis.time = tt.toString()+':00:00';
+                            } else if (agent.parameters['time-period'] !== '') {
+                                let t = agent.parameters['time-period'].startTime.split('T')[1].split('-')[0].split(':')[0];
+                                let tt = Math.round(+t/3)*3;
+                                if (tt === 24) tt = 0;
+                                timePoint += tt.toString()+':00:00';
+                                myHis.time = tt.toString()+':00:00';
+                            }
+                        } else if (agent.parameters['date-period'] !== '') {
+                            timePoint += agent.parameters['date-period'].startDate.split('T')[0]+' ';
+                            myHis.date = agent.parameters['date-period'].startDate.split('T')[0];
+                            if (agent.parameters['time'] !== '') {
+                                let t = agent.parameters.time.split('T')[1].split('-')[0].split(':')[0];
+                                let tt = Math.round(+t/3)*3;
+                                if (tt === 24) tt = 0;
+                                timePoint += tt.toString()+':00:00';
+                                myHis.time = tt.toString()+':00:00';
+                            } else if (agent.parameters['time-period'] !== '') {
+                                let t = agent.parameters['time-period'].startTime.split('T')[1].split('-')[0].split(':')[0];
+                                let tt = Math.round(+t/3)*3;
+                                if (tt === 24) tt = 0;
+                                timePoint += tt.toString()+':00:00';
+                                myHis.time = tt.toString()+':00:00';
+                            }
+                        }
+                    }  else if (hasNewDate && !hasNewTime) {
+                        if (agent.parameters.date !== '') {
+                            myHis.date = agent.parameters.date.split('T')[0];
+                            if (history.time !== '') {
+                                timePoint += agent.parameters.date.split('T')[0] + ' '+history.time;
+                            } else {
+                                message = askTime[Math.floor(Math.random()*askTime.length)];
+                                break;
+                            }
+                        } else if (agent.parameters['date-period'] !== '') {
+                            myHis.date = agent.parameters['date-period'].startDate.split('T')[0];
+                            if (history.time !== '') {
+                                timePoint += agent.parameters['date-period'].startDate.split('T')[0]+' '+history.time;
+                            } else {
+                                message = askTime[Math.floor(Math.random()*askTime.length)];
+                                break;
+                            }
+                        }
+                    } else if (!hasNewDate && hasNewTime) {
+                        if (agent.parameters.time !== '') {
+                            let t = agent.parameters.time.split('T')[1].split('-')[0].split(':')[0];
                             let tt = Math.round(+t/3)*3;
                             if (tt === 24) tt = 0;
-                            timePoint += tt.toString()+':00:00';
-                        } else if (parameters['time-period'] !== '') {
-                            let t = parameters['time-period'].startTime.split('T')[1].split('-')[0].split(':')[0];
+                            myHis.time = tt.toString()+':00:00';
+                            if (history.date !== '') {
+                                timePoint = history.date+' '+tt.toString()+':00:00';
+                            } else {
+                                message = askDate[Math.floor(Math.random()*askDate.length)];
+                                break;
+                            }
+                        } else if (agent.parameters['time-period'] !== '') {
+                            let t = agent.parameters['time-period'].startTime.split('T')[1].split('-')[0].split(':')[0];
                             let tt = Math.round(+t/3)*3;
                             if (tt === 24) tt = 0;
-                            timePoint += tt.toString()+':00:00';
-                        } else message = askTime[Math.floor(Math.random()*askTime.length)];
-                    } else if (parameters['date-period'] !== '') {
-                        timePoint = '';
-                        timePoint += parameters['date-period'].startDate.split('T')[0]+' ';
-                        if (parameters['time'] !== '') {
-                            let t = parameters.time.split('T')[1].split('-')[0].split(':')[0];
-                            let tt = Math.round(+t/3)*3;
-                            if (tt === 24) tt = 0;
-                            timePoint += tt.toString()+':00:00';
-                        } else if (parameters['time-period'] !== '') {
-                            let t = parameters['time-period'].startTime.split('T')[1].split('-')[0].split(':')[0];
-                            let tt = Math.round(+t/3)*3;
-                            if (tt === 24) tt = 0;
-                            timePoint += tt.toString()+':00:00';
-                        } else message = askTime[Math.floor(Math.random()*askTime.length)];
-                    } else if (timePoint === '') message = askDate[Math.floor(Math.random()*askDate.length)];
+                            myHis.time = tt.toString()+':00:00';
+                            if (history.date !== '') {
+                                timePoint = history.date+' '+tt.toString()+':00:00';
+                            } else {
+                                message = askDate[Math.floor(Math.random()*askDate.length)];
+                                break;
+                            }
+                        }
+                    } else if (!hasNewDate && !hasNewTime) {
+                        if (history.date !== '' && history.time !== '') timePoint = history.date+' '+history.time;
+                        else if (history.date !== '' && history.time === '') {
+                            message = askTime[Math.floor(Math.random()*askTime.length)];
+                            break;
+                        } else if (history.date === '' && history.time !== '') {
+                            message = askDate[Math.floor(Math.random()*askDate.length)];
+                            break;
+                        } else if (history.date === '' && history.time === '') {
+                            message = askDate[Math.floor(Math.random()*askDate.length)];
+                            break;
+                        }
+                    }
                 }
                 // final is weather parameters
                 if (message === '') {
-                    if (parameters.weatherParameter.length > 0) weatherParameter = parameters.weatherParameter[0];
-                    else if (weatherParameter === '') message = askWeatherParameter[Math.floor(Math.random()*askWeatherParameter.length)];
+                    if (agent.parameters.weatherParameter.length > 0) {
+                        weatherParameter = agent.parameters.weatherParameter[0];
+                        myHis.weatherParameter = agent.parameters.weatherParameter[0];
+                    } else if (history.weatherParameter === '') {
+                        message = askWeatherParameter[Math.floor(Math.random()*askWeatherParameter.length)];
+                        break;
+                    }
                 }
                 // enough information
                 if (message === '') {
                     data = myData;
                     if (data) {
                         if (data !== 'no data') {
+                            myHis.data = data;
                             // find date original
                             let tArr = timePoint.split(' ');
                             let dDate = 0;
@@ -153,17 +226,17 @@ function botMessage (agent,history,myData) {
                             let resTime = timePoint.split(' ')[1].split(':')[0];
 
                             message = 'Can I verify information before querying data? You want to know '+weatherParameter+' in '+cityName+' on '+resDate+' at around '+resTime+' o\'clock, correct?';
-                            myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:10,data:data};  // open flow 10
+                            myHis.flowYN = 10;  // open flow 10
 
                         } else {
                             message = 'Our weather API is a 5 day weather forecast (from today). Is your request time in this range?';
                             // open flow 100
-                            myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:100,data:data};
+                            myHis.flowYN = 100;
                         }
                     } else {
                         message = askCheck[Math.floor(Math.random()*askCheck.length)];
                         // open flow 1000
-                        myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:1000,data:data};
+                        myHis.flowYN = 1000;
                     }
                 }
                 break;
@@ -173,6 +246,7 @@ function botMessage (agent,history,myData) {
                 if (flowYN === 10) { // flow 10: verify all info => correct?
                     data = history.data;
                     // find date original
+                    let timePoint = history.date+' '+history.time;
                     let tArr = timePoint.split(' ');
                     let dDate = 0;
                     if (month.get(tArr[0].split('-')[1]) === currentDateArr[1]) dDate = (+tArr[0].split('-')[2]) - (+currentDateArr[2]);
@@ -182,7 +256,7 @@ function botMessage (agent,history,myData) {
                     // find time original
                     let resTime = timePoint.split(' ')[1].split(':')[0];
                     // appropriate message
-                    switch (weatherParameter) {
+                    switch (history.weatherParameter) {
                         case 'temperature':
                             data = Math.floor(data-273);
                             message = 'The temperature in '+cityName+' on '+resDate+' at around '+resTime+' is '+data.toString()+' degree Celsius';
@@ -202,27 +276,31 @@ function botMessage (agent,history,myData) {
                             message = 'The weather in '+cityName+' on '+resDate+' at around '+resTime+' is '+data;
                             break;
                     }
-                    myHis = {city:'',timePoint:'',weatherParameter:'',flowYN:0,data:''}; // back to flow 0
+                    myHis.city = '';
+                    myHis.timePoint = '';
+                    myHis.weatherParameter = '';
+                    myHis.flowYN = 0;
+                    myHis.data = '';
                 }
                 if (flowYN === 100) { // flow 100: correct time range?
                     message = 'There must be something wrong! Do you type your city correctly?';
-                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:101,data:data};   // open flow 101
+                    myHis.flowYN = 101; // open flow 101
                 }
                 if (flowYN === 101) {  // flow 101: correct city?
                     message = 'What is about the weather\'s information? Is it in one of the following factors: weather, temperature, and humidity?';
-                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:102,data:data}; // open flow 102
+                    myHis.flowYN = 102; // open flow 102
                 }
                 if (flowYN === 102) {  // flow 102: correct weather parameter?
                     message = 'There maybe some problems with my free weather API. Please retry the process again!';
-                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:0,data:data};  // back to flow 0 - end flow
+                    myHis.flowYN = 0;  // back to flow 0 - end flow
                 }
                 if (flowYN === 200) {  // flow 200: request another day?
                     message = askDate[Math.floor(Math.random()*askDate.length)];
-                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:0,data:data};  // end flow
+                    myHis.flowYN = 0;  // end flow
                 }
                 if (flowYN === 1000) {  // flow 1000: check info => correct?
                     message = 'Our weather API is a 5 day weather forecast (from today). Is your request time in this range?';
-                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:100,data:data};  // come to flow 100
+                    myHis.flowYN = 100;  // come to flow 100
                 }
                 break;
 
@@ -233,30 +311,34 @@ function botMessage (agent,history,myData) {
                 }
                 if (flowYN === 100) {  // flow 100: correct time range?
                     message = 'Do you want to request weather information on another day?';
-                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:200,data:data}; // open flow 200
+                    myHis.flowYN = 200; // open flow 200
                 }
                 if (flowYN === 101) {  // flow 101: correct city?
                     message = 'Please update the city name!';
-                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:0,data:data};  // back to flow 0 - end flow
+                    myHis.flowYN = 0;  // back to flow 0 - end flow
                 }
                 if (flowYN === 102) { // flow 102: correct weather parameter?
                     message = 'Please update the weather factor that you want to know!';
-                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:0,data:data};  // back to flow 0 - end flow
+                    myHis.flowYN = 0;  // back to flow 0 - end flow
                 }
                 if (flowYN === 200) {  // flow 200: request another day?
                     message = 'We are so sorry for the limitation of our services! If you have another request, please ask!';
-                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:0,data:data};  // end flow
+                    myHis.flowYN = 0;  // end flow
                 }
                 if (flowYN === 1000) {
                     message = 'Please update the information!';
-                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:0,data:data};  // end flow
+                    myHis.flowYN = 0;  // end flow
                 }
                 break;
         }
 
     } catch (e) {
         message = 'Please ensure you provide correct information as following: one city, one time point, and one weather factor (one from weather description, temperature, or humidity). I will reset the process.';
-        myHis = {city:'',timePoint:'',weatherParameter:'',flowYN:0,data:''};
+        myHis.city = '';
+        myHis.timePoint = '';
+        myHis.weatherParameter = '';
+        myHis.flowYN = 0;
+        myHis.data = '';
     }
     // console.log(data);
     // console.log(myHis);
