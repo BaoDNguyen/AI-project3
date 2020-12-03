@@ -1,7 +1,5 @@
-const weatherAPI = require('./weatherAPI');
-
-function botMessage (agent,history) {
-
+function botMessage (agent,history,myData) {
+    // console.log('data2',myData);
     let message = '';
     let flowYN = history.flowYN;
     let myHis = history;
@@ -141,7 +139,7 @@ function botMessage (agent,history) {
                 }
                 // enough information
                 if (message === '') {
-                    data = weatherAPI.getWeatherInfo(cityName,timePoint,weatherParameter);
+                    data = myData;
                     if (data) {
                         if (data !== 'no data') {
                             // find date original
@@ -173,7 +171,7 @@ function botMessage (agent,history) {
             // verify information
             case 'agreement':
                 if (flowYN === 10) { // flow 10: verify all info => correct?
-                    data = weatherAPI.getWeatherInfo(cityName,timePoint,weatherParameter);
+                    data = myData;
                     // find date original
                     let tArr = timePoint.split(' ');
                     let dDate = 0;
@@ -255,13 +253,12 @@ function botMessage (agent,history) {
                 }
                 break;
         }
+
     } catch (e) {
         message = 'Please ensure you provide correct information as following: one city, one time point, and one weather factor (one from weather description, temperature, or humidity). I will reset the process.';
         myHis = {city:'',timePoint:'',weatherParameter:'',flowYN:0};
     }
-
-    console.log('data:',data);
-
+    // console.log(data);
     return {message: message, myHis: myHis};
 
 }

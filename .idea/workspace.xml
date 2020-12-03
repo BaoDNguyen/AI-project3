@@ -3,6 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="e11b82e9-43c9-4d68-a9f5-c31bcb0b30db" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manageConversation.js" beforeDir="false" afterPath="$PROJECT_DIR$/manageConversation.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/weatherAPI.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +53,7 @@
       <workItem from="1606826716961" duration="207000" />
       <workItem from="1606836905757" duration="31537000" />
       <workItem from="1606900749516" duration="124000" />
-      <workItem from="1606928185602" duration="8778000" />
+      <workItem from="1606928185602" duration="12902000" />
     </task>
     <servers />
   </component>
@@ -62,5 +65,9 @@
       <screen x="0" y="23" width="1680" height="958" />
     </state>
     <state x="348" y="154" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1680.958@0.23.1680.958" timestamp="1606957879919" />
+    <state x="622" y="246" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1606968794845">
+      <screen x="0" y="23" width="1680" height="958" />
+    </state>
+    <state x="622" y="246" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.23.1680.958@0.23.1680.958" timestamp="1606968794845" />
   </component>
 </project>
