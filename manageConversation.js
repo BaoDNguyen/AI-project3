@@ -9,7 +9,7 @@ function botMessage (agent,history,myData) {
     let time = history.time;
     let weatherParameter = history.weatherParameter;
 
-    let data;
+    let data = myData;
 
     let intent = agent.intent;
 
@@ -93,6 +93,12 @@ function botMessage (agent,history,myData) {
             // greet
             case 'Default Welcome Intent':
                 message = 'Welcome to Weather Assistant! How can I help you?';
+                myHis.city = '';
+                myHis.date = '';
+                myHis.time = '';
+                myHis.weatherParameter = '';
+                myHis.flowYN = 0;
+                myHis.data = '';
                 break;
 
             // try to get information
@@ -218,7 +224,9 @@ function botMessage (agent,history,myData) {
                 }
                 // enough information
                 if (message === '') {
-                    data = myData;
+                    if (data) {
+
+                    }
                     if (flowYN===0) {
                         if (data !== 'no data') {
                             myHis.data = data;
