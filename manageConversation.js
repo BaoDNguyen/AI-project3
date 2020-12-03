@@ -285,7 +285,8 @@ function botMessage (agent,history,myData) {
                             break;
                     }
                     myHis.city = '';
-                    myHis.timePoint = '';
+                    myHis.date = '';
+                    myHis.time = '';
                     myHis.weatherParameter = '';
                     myHis.flowYN = 0;
                     myHis.data = '';
@@ -344,7 +345,8 @@ function botMessage (agent,history,myData) {
         console.error(e);
         message = 'Please ensure you provide correct information as following: one city, one time point, and one weather factor (one from weather description, temperature, or humidity). I will reset the process.';
         myHis.city = '';
-        myHis.timePoint = '';
+        myHis.date = '';
+        myHis.time = '';
         myHis.weatherParameter = '';
         myHis.flowYN = 0;
         myHis.data = '';
