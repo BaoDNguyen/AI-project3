@@ -260,7 +260,7 @@ function botMessage (agent,history) {
         myHis = {city:'',timePoint:'',weatherParameter:'',flowYN:0};
     }
 
-    console.log(data);
+    console.log('data:',data);
 
     return {message: message, myHis: myHis};
 

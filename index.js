@@ -50,5 +50,7 @@ const dialogflowFulfillment = (request, response) => {
 
     agent.handleRequest(intentMap);
 
+    console.log('parameters:',agent.parameters);
+
 }
 
