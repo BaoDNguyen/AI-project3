@@ -76,12 +76,14 @@ const dialogflowFulfillment = (request, response) => {
                         let t = agent.parameters.time.split('T')[1].split('-')[0].split(':')[0];
                         let tt = Math.round(+t/3)*3;
                         if (tt === 24) tt = 0;
-                        timePoint += tt.toString()+':00:00';
+                        let ttt = (tt < 10) ? '0'+tt.toString() : tt.toString();
+                        timePoint += ttt+':00:00';
                     } else if (agent.parameters['time-period'] !== '') {
                         let t = agent.parameters['time-period'].startTime.split('T')[1].split('-')[0].split(':')[0];
                         let tt = Math.round(+t/3)*3;
                         if (tt === 24) tt = 0;
-                        timePoint += tt.toString()+':00:00';
+                        let ttt = (tt < 10) ? '0'+tt.toString() : tt.toString();
+                        timePoint += ttt+':00:00';
                     }
                 } else if (agent.parameters['date-period'] !== '') {
                     timePoint += agent.parameters['date-period'].startDate.split('T')[0]+' ';
@@ -89,12 +91,14 @@ const dialogflowFulfillment = (request, response) => {
                         let t = agent.parameters.time.split('T')[1].split('-')[0].split(':')[0];
                         let tt = Math.round(+t/3)*3;
                         if (tt === 24) tt = 0;
-                        timePoint += tt.toString()+':00:00';
+                        let ttt = (tt < 10) ? '0'+tt.toString() : tt.toString();
+                        timePoint += ttt+':00:00';
                     } else if (agent.parameters['time-period'] !== '') {
                         let t = agent.parameters['time-period'].startTime.split('T')[1].split('-')[0].split(':')[0];
                         let tt = Math.round(+t/3)*3;
                         if (tt === 24) tt = 0;
-                        timePoint += tt.toString()+':00:00';
+                        let ttt = (tt < 10) ? '0'+tt.toString() : tt.toString();
+                        timePoint += ttt+':00:00';
                     }
                 }
             } else if (!hasNewDate && hasNewTime) {
@@ -108,7 +112,8 @@ const dialogflowFulfillment = (request, response) => {
                     let t = agent.parameters['time-period'].startTime.split('T')[1].split('-')[0].split(':')[0];
                     let tt = Math.round(+t/3)*3;
                     if (tt === 24) tt = 0;
-                    timePoint += tt.toString()+':00:00';
+                    let ttt = (tt < 10) ? '0'+tt.toString() : tt.toString();
+                    timePoint += ttt+':00:00';
                 }
             } else if (!hasNewDate && !hasNewTime) timePoint = history.date+' '+history.time;
 

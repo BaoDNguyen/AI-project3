@@ -118,14 +118,16 @@ function botMessage (agent,history,myData) {
                                 let t = agent.parameters.time.split('T')[1].split('-')[0].split(':')[0];
                                 let tt = Math.round(+t/3)*3;
                                 if (tt === 24) tt = 0;
-                                timePoint += tt.toString()+':00:00';
-                                myHis.time = tt.toString()+':00:00';
+                                let ttt = (tt < 10) ? '0'+tt.toString() : tt.toString();
+                                timePoint += ttt+':00:00';
+                                myHis.time = ttt+':00:00';
                             } else if (agent.parameters['time-period'] !== '') {
                                 let t = agent.parameters['time-period'].startTime.split('T')[1].split('-')[0].split(':')[0];
                                 let tt = Math.round(+t/3)*3;
                                 if (tt === 24) tt = 0;
-                                timePoint += tt.toString()+':00:00';
-                                myHis.time = tt.toString()+':00:00';
+                                let ttt = (tt < 10) ? '0'+tt.toString() : tt.toString();
+                                timePoint += ttt+':00:00';
+                                myHis.time = ttt+':00:00';
                             }
                         } else if (agent.parameters['date-period'] !== '') {
                             timePoint += agent.parameters['date-period'].startDate.split('T')[0]+' ';
@@ -134,14 +136,16 @@ function botMessage (agent,history,myData) {
                                 let t = agent.parameters.time.split('T')[1].split('-')[0].split(':')[0];
                                 let tt = Math.round(+t/3)*3;
                                 if (tt === 24) tt = 0;
-                                timePoint += tt.toString()+':00:00';
-                                myHis.time = tt.toString()+':00:00';
+                                let ttt = (tt < 10) ? '0'+tt.toString() : tt.toString();
+                                timePoint += ttt+':00:00';
+                                myHis.time = ttt+':00:00';
                             } else if (agent.parameters['time-period'] !== '') {
                                 let t = agent.parameters['time-period'].startTime.split('T')[1].split('-')[0].split(':')[0];
                                 let tt = Math.round(+t/3)*3;
                                 if (tt === 24) tt = 0;
-                                timePoint += tt.toString()+':00:00';
-                                myHis.time = tt.toString()+':00:00';
+                                let ttt = (tt < 10) ? '0'+tt.toString() : tt.toString();
+                                timePoint += ttt+':00:00';
+                                myHis.time = ttt+':00:00';
                             }
                         }
                     }  else if (hasNewDate && !hasNewTime) {
@@ -167,7 +171,8 @@ function botMessage (agent,history,myData) {
                             let t = agent.parameters.time.split('T')[1].split('-')[0].split(':')[0];
                             let tt = Math.round(+t/3)*3;
                             if (tt === 24) tt = 0;
-                            myHis.time = tt.toString()+':00:00';
+                            let ttt = (tt < 10) ? '0'+tt.toString() : tt.toString();
+                            myHis.time = ttt+':00:00';
                             if (history.date !== '') {
                                 timePoint = history.date+' '+tt.toString()+':00:00';
                             } else {
@@ -178,7 +183,8 @@ function botMessage (agent,history,myData) {
                             let t = agent.parameters['time-period'].startTime.split('T')[1].split('-')[0].split(':')[0];
                             let tt = Math.round(+t/3)*3;
                             if (tt === 24) tt = 0;
-                            myHis.time = tt.toString()+':00:00';
+                            let ttt = (tt < 10) ? '0'+tt.toString() : tt.toString();
+                            myHis.time = ttt+':00:00';
                             if (history.date !== '') {
                                 timePoint = history.date+' '+tt.toString()+':00:00';
                             } else {
