@@ -136,7 +136,7 @@ function botMessage (agent,history) {
                 }
                 // final is weather parameters
                 if (message === '') {
-                    if (parameters.weatherParameter !== '') weatherParameter = parameters.weatherParameter;
+                    if (parameters.weatherParameter.length > 0) weatherParameter = parameters.weatherParameter[0];
                     else if (weatherParameter === '') message = askWeatherParameter[Math.floor(Math.random()*askWeatherParameter.length)];
                 }
                 // enough information
