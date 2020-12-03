@@ -106,6 +106,7 @@ function botMessage (agent,history,myData) {
                     break;
                 }
                 // time next
+                let timePoint = '';
                 if (message === '') {
                     let hasNewDate = agent.parameters.date !== '' || agent.parameters['date-period'] !== '';
                     let hasNewTime = agent.parameters.time !== '' || agent.parameters['time-period'] !== '';
@@ -215,6 +216,7 @@ function botMessage (agent,history,myData) {
                     if (data) {
                         if (data !== 'no data') {
                             myHis.data = data;
+                            console.log('data4',data);
                             // find date original
                             let tArr = timePoint.split(' ');
                             let dDate = 0;
@@ -333,6 +335,7 @@ function botMessage (agent,history,myData) {
         }
 
     } catch (e) {
+        console.error(e);
         message = 'Please ensure you provide correct information as following: one city, one time point, and one weather factor (one from weather description, temperature, or humidity). I will reset the process.';
         myHis.city = '';
         myHis.timePoint = '';
@@ -340,8 +343,10 @@ function botMessage (agent,history,myData) {
         myHis.flowYN = 0;
         myHis.data = '';
     }
-    // console.log(data);
-    // console.log(myHis);
+    console.log(agent.parameters);
+    console.log('data2',myData);
+     console.log('data3',data);
+     console.log(myHis);
     return {message: message, myHis: myHis};
 
 }

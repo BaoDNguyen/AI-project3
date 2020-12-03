@@ -158,11 +158,12 @@ const dialogflowFulfillment = (request, response) => {
                             }
                             if (count === N-1) data = 'no data';
 
-                            // console.log('data1',data);
-                            // console.log('url',reqUrl);
-                            // console.log('city',cityName);
-                            // console.log('time',timePoint);
-                            // console.log('weather',weatherParameter);
+                             console.log('data1',data);
+                             console.log('url',reqUrl);
+                             console.log('city',cityName);
+                             console.log('time',timePoint);
+                             console.log('weather',weatherParameter);
+                            //console.log(agent.parameters);
 
                             let botRes = management.botMessage(agent,history,data);
                             history = botRes.myHis;
