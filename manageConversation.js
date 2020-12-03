@@ -153,17 +153,17 @@ function botMessage (agent,history,myData) {
                             let resTime = timePoint.split(' ')[1].split(':')[0];
 
                             message = 'Can I verify information before querying data? You want to know '+weatherParameter+' in '+cityName+' on '+resDate+' at around '+resTime+' o\'clock, correct?';
-                            myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:10};  // open flow 10
+                            myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:10,data:data};  // open flow 10
 
                         } else {
                             message = 'Our weather API is a 5 day weather forecast (from today). Is your request time in this range?';
                             // open flow 100
-                            myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:100};
+                            myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:100,data:data};
                         }
                     } else {
                         message = askCheck[Math.floor(Math.random()*askCheck.length)];
                         // open flow 1000
-                        myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:1000};
+                        myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:1000,data:data};
                     }
                 }
                 break;
@@ -171,7 +171,7 @@ function botMessage (agent,history,myData) {
             // verify information
             case 'agreement':
                 if (flowYN === 10) { // flow 10: verify all info => correct?
-                    data = myData;
+                    data = history.data;
                     // find date original
                     let tArr = timePoint.split(' ');
                     let dDate = 0;
@@ -202,27 +202,27 @@ function botMessage (agent,history,myData) {
                             message = 'The weather in '+cityName+' on '+resDate+' at around '+resTime+' is '+data;
                             break;
                     }
-                    myHis = {city:'',timePoint:'',weatherParameter:'',flowYN:0}; // back to flow 0
+                    myHis = {city:'',timePoint:'',weatherParameter:'',flowYN:0,data:''}; // back to flow 0
                 }
                 if (flowYN === 100) { // flow 100: correct time range?
                     message = 'There must be something wrong! Do you type your city correctly?';
-                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:101};   // open flow 101
+                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:101,data:data};   // open flow 101
                 }
                 if (flowYN === 101) {  // flow 101: correct city?
                     message = 'What is about the weather\'s information? Is it in one of the following factors: weather, temperature, and humidity?';
-                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:102}; // open flow 102
+                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:102,data:data}; // open flow 102
                 }
                 if (flowYN === 102) {  // flow 102: correct weather parameter?
                     message = 'There maybe some problems with my free weather API. Please retry the process again!';
-                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:0};  // back to flow 0 - end flow
+                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:0,data:data};  // back to flow 0 - end flow
                 }
                 if (flowYN === 200) {  // flow 200: request another day?
                     message = askDate[Math.floor(Math.random()*askDate.length)];
-                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:0};  // end flow
+                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:0,data:data};  // end flow
                 }
                 if (flowYN === 1000) {  // flow 1000: check info => correct?
                     message = 'Our weather API is a 5 day weather forecast (from today). Is your request time in this range?';
-                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:100};  // come to flow 100
+                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:100,data:data};  // come to flow 100
                 }
                 break;
 
@@ -233,32 +233,33 @@ function botMessage (agent,history,myData) {
                 }
                 if (flowYN === 100) {  // flow 100: correct time range?
                     message = 'Do you want to request weather information on another day?';
-                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:200}; // open flow 200
+                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:200,data:data}; // open flow 200
                 }
                 if (flowYN === 101) {  // flow 101: correct city?
                     message = 'Please update the city name!';
-                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:0};  // back to flow 0 - end flow
+                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:0,data:data};  // back to flow 0 - end flow
                 }
                 if (flowYN === 102) { // flow 102: correct weather parameter?
                     message = 'Please update the weather factor that you want to know!';
-                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:0};  // back to flow 0 - end flow
+                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:0,data:data};  // back to flow 0 - end flow
                 }
                 if (flowYN === 200) {  // flow 200: request another day?
                     message = 'We are so sorry for the limitation of our services! If you have another request, please ask!';
-                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:0};  // end flow
+                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:0,data:data};  // end flow
                 }
                 if (flowYN === 1000) {
                     message = 'Please update the information!';
-                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:0};  // end flow
+                    myHis = {city:cityName,timePoint:timePoint,weatherParameter:weatherParameter,flowYN:0,data:data};  // end flow
                 }
                 break;
         }
 
     } catch (e) {
         message = 'Please ensure you provide correct information as following: one city, one time point, and one weather factor (one from weather description, temperature, or humidity). I will reset the process.';
-        myHis = {city:'',timePoint:'',weatherParameter:'',flowYN:0};
+        myHis = {city:'',timePoint:'',weatherParameter:'',flowYN:0,data:''};
     }
     // console.log(data);
+    // console.log(myHis);
     return {message: message, myHis: myHis};
 
 }

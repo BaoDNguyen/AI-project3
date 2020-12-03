@@ -19,7 +19,7 @@ app.listen(port, () => {
     console.log(`🌏 Server is running at http://localhost:${port}`)
 });
 
-let history = {city:'',timePoint:'',weatherParameter:'',flowYN:0};
+let history = {city:'',timePoint:'',weatherParameter:'',flowYN:0,data:''};
 
 let management = require('./manageConversation');
 
