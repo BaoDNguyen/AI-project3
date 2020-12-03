@@ -54,8 +54,8 @@ const dialogflowFulfillment = (request, response) => {
             agent.handleRequest(intentMap);
 
             function addRes1(agent) {
-                if (botRes.message !== '') agent.add(botRes.message);
-                else agent.add('Please tell me more!');
+                if (botRes.message) agent.add(botRes.message);
+                else agent.add('Please tell me more clear!');
             }
 
         } else {
@@ -182,8 +182,8 @@ const dialogflowFulfillment = (request, response) => {
                             agent.handleRequest(intentMap);
 
                             function addRes2(agent) {
-                                if (botRes.message !== '') agent.add(botRes.message);
-                                else agent.add('Please tell me more!');
+                                if (botRes.message) agent.add(botRes.message);
+                                else agent.add('Please tell me more clear!');
                             }
 
                             // return response.json({weather: weatherRespond.list[0].weather[0].description});
@@ -203,7 +203,7 @@ const dialogflowFulfillment = (request, response) => {
                 })
             });
         }
-    } else {
+    } else if (agent.intent) {
         let botRes = management.botMessage(agent,history);
         history = botRes.myHis;
 
@@ -216,9 +216,14 @@ const dialogflowFulfillment = (request, response) => {
         agent.handleRequest(intentMap);
 
         function addRes3(agent) {
-            if (botRes.message !== '') agent.add(botRes.message);
-            else agent.add('Please tell me more!');
+            if (botRes.message) agent.add(botRes.message);
+            else agent.add('Please tell me more clear!');
         }
+    } else {
+        return response.json({
+            fulfillmentText: 'I cannot detect intent. Please tell me more clear!',
+            source: 'weatherBot',
+        });
     }
 
 
